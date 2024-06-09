@@ -1,8 +1,8 @@
 const express = require("express");
+const { info } = require("../../controllers");
 const router = express.Router();
 
-const v1Route = require("./v1");
 
-router.use('/v1', v1Route);
+router.route('/server-status').get(info);
 
 module.exports = router;

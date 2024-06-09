@@ -6,10 +6,6 @@ dotenv.config(
     }
 );
 
-const PORT = Number(process.env.PORT);
-
-console.log(PORT);
-
 module.exports = {
-    PORT
+    PORT: process.env.PORT
 }

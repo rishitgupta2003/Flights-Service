@@ -1,11 +1,15 @@
 const { StatusCodes } = require("http-status-codes");
-const serverConfig = require("./config");
+const { ServerConfig, Logger } = require("./config");
 const express = require("express");
+const apiRoute = require("./routes");
 
 const app = express();
 
-app.listen(serverConfig.PORT, () => {
-    console.log(`APP RUNNING ON PORT -> ${serverConfig.PORT}`);
+app.use('/api', apiRoute);
+
+app.listen(ServerConfig.PORT, () => {
+    console.log(`APP RUNNING ON PORT -> ${ServerConfig.PORT}`);
+    Logger.info( "Successfully Started Server",{} );
 });
 
 app.get("/", (req, res) => {
