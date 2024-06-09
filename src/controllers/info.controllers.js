@@ -13,5 +13,5 @@ const info = asyncHandler(
 );
 
 module.exports = {
-    info
+    info,
 }

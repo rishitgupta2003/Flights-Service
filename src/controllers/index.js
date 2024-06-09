@@ -1,5 +1,3 @@
-const { info } = require("./info.controllers");
-
 module.exports = {
-    info
-}
+    InfoController: require("./info.controllers"),
+};

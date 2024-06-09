@@ -1,8 +1,8 @@
 const express = require("express");
-const { info } = require("../../controllers");
+const { InfoController } = require("../../controllers")
 const router = express.Router();
 
 
-router.route('/server-status').get(info);
+router.route('/server-status').get(InfoController.info);
 
 module.exports = router;
