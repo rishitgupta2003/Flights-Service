@@ -11,3 +11,7 @@ async function createAirplane(data){
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
     }    
 }
+
+module.exports = {
+    createAirplane
+}

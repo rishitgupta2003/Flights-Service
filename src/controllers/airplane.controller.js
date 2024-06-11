@@ -1,6 +1,11 @@
 const { StatusCodes } = require("http-status-codes");
 const { AirplaneService } = require("../services");
-const { asyncHandler, ApiResponse } = require("../utils");
+const { asyncHandler, ApiResponse, ApiError } = require("../utils");
+
+/*
+    POST Method
+    req_body : { modelNumber, capacity }
+*/
 
 const createAirplane = asyncHandler (
     async (req, res) => {
@@ -22,7 +27,7 @@ const createAirplane = asyncHandler (
             );
         } catch (error) {
             throw new ApiError(
-                StatusCodes.INTERNAL_SERVER_ERROR,
+                StatusCodes.BAD_REQUEST,
                 error.message
             );
         }
