@@ -142,4 +142,5 @@ dist
 .svelte-kit
 config.json
 notes.txt
+config.json
 # End of https://www.toptal.com/developers/gitignore/api/node
