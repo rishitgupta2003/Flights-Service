@@ -11,6 +11,7 @@ class CrudRepository{
             return response;
         } catch (error) {
             Logger.error(`Something Went Wrong with CRUD Repo : Create Logic -> ${error}`);
+            throw error;
         }
     }
 

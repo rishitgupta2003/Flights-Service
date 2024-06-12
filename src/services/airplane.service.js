@@ -8,6 +8,12 @@ async function createAirplane(data){
         const airplane = await airplaneRepository.create(data);
         return airplane
     } catch (error) {
+        console.log(error);
+        if(error.name == "SequelizeValidationError"){
+            console.log(error);
+        
+            throw new ApiError(StatusCodes.BAD_REQUEST, error.toString());
+        }
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
     }    
 }

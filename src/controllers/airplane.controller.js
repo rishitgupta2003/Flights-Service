@@ -28,7 +28,7 @@ const createAirplane = asyncHandler (
         } catch (error) {
             throw new ApiError(
                 StatusCodes.BAD_REQUEST,
-                error.message
+                error.message,
             );
         }
     }
