@@ -27,6 +27,7 @@ class CrudRepository{
             return response;
         } catch (error) {
             Logger.error(`Something Went Wrong with CRUD Repo : Destroy Logic -> ${error}`);
+            throw error;
         }
     }
 
@@ -36,6 +37,7 @@ class CrudRepository{
             return response;
         } catch (error) {
             Logger.error(`Something Went Wrong with CRUD Repo : Get Logic -> ${error}`);
+            throw error;
         }
     }
 
@@ -45,6 +47,7 @@ class CrudRepository{
             return response;
         } catch (error) {
             Logger.error(`Something Went Wrong with CRUD Repo : GetAll Logic -> ${error}`);
+            throw error;
         }
     }
 
@@ -58,6 +61,7 @@ class CrudRepository{
             return response;
         } catch (error) {
             Logger.error(`Something Went Wrong with CRUD Repo : Update Logic -> ${error}`);
+            throw error;
         }
     }
 }
