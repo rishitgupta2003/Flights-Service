@@ -18,12 +18,14 @@ const createAirplane = asyncHandler (
                 }
             )
 
-            return res.status(StatusCodes.OK).json(
-                new ApiResponse(
-                    StatusCodes.OK,
-                    airplane,
-                    "Airplane Added Successfully"
-                )
+            return res.
+                    status(StatusCodes.OK).
+                    json(
+                        new ApiResponse(
+                            StatusCodes.OK,
+                            airplane,
+                        "Airplane Added Successfully"
+                    )
             );
         } catch (error) {
             throw new ApiError(
@@ -34,6 +36,29 @@ const createAirplane = asyncHandler (
     }
 )
 
+const getAirplanes = asyncHandler(
+    async (req, res) => {
+        try {
+            const airplanes = await AirplaneService.getAirplanes();
+            return res
+                    .status(StatusCodes.OK)
+                    .json(
+                        new ApiResponse(
+                            StatusCodes.OK,
+                            airplanes,
+                            "Fetched Airplanes Successfully"
+                        )
+                    );
+        } catch (error) {
+            throw new ApiError(
+                StatusCodes.INTERNAL_SERVER_ERROR,
+                error.message
+            );
+        }
+    }
+)
+
 module.exports = {
-    createAirplane
+    createAirplane,
+    getAirplanes
 }
