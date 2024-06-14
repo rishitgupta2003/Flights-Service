@@ -36,6 +36,10 @@ const createAirplane = asyncHandler (
     }
 )
 
+/*
+    GET Method
+*/
+
 const getAirplanes = asyncHandler (
     async (req, res) => {
         try {
@@ -57,6 +61,12 @@ const getAirplanes = asyncHandler (
         }
     }
 )
+
+/*
+    GET Method
+    /airplanes/:id
+    req.body : {}
+*/
 
 const getAirplane = asyncHandler (
     async (req, res) => {
@@ -81,8 +91,38 @@ const getAirplane = asyncHandler (
     }
 )
 
+/*
+    DELETE Method
+    /airplane/:id
+    req.body: {}
+*/
+
+const deleteAirplane = asyncHandler (
+    async (req, res) => {
+        try{
+            const id = req.params.id;
+            const response = await AirplaneService.deleteAirplane(id);
+            return res
+                    .status(StatusCodes.OK)
+                    .json(
+                        new ApiResponse(
+                            StatusCodes.OK,
+                            response,
+                            "Deleted Successfully"
+                        )
+                    )
+        } catch(error){
+            throw new ApiError(
+                error.status_code || StatusCodes.INTERNAL_SERVER_ERROR,
+                error.message
+            );
+        }
+    }
+)
+
 module.exports = {
     createAirplane,
     getAirplanes,
-    getAirplane
+    getAirplane,
+    deleteAirplane
 }
