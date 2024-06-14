@@ -36,7 +36,7 @@ const createAirplane = asyncHandler (
     }
 )
 
-const getAirplanes = asyncHandler(
+const getAirplanes = asyncHandler (
     async (req, res) => {
         try {
             const airplanes = await AirplaneService.getAirplanes();
@@ -58,7 +58,31 @@ const getAirplanes = asyncHandler(
     }
 )
 
+const getAirplane = asyncHandler (
+    async (req, res) => {
+        try{
+            const id = req.params.id;
+            const airplane = await AirplaneService.getAirplane(id);
+            return res
+                    .status(StatusCodes.OK)
+                    .json(
+                        new ApiResponse(
+                            StatusCodes.OK,
+                            airplane,
+                            "Fetched Details Successfully"
+                        )
+                    )
+        }catch(error){
+            throw new ApiError(
+                StatusCodes.INTERNAL_SERVER_ERROR,
+                error.message
+            );
+        }
+    }
+)
+
 module.exports = {
     createAirplane,
-    getAirplanes
+    getAirplanes,
+    getAirplane
 }

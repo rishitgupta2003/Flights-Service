@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.route('/').post(AirplaneMiddleware.createCreateRequest, AirplaneController.createAirplane);
 router.route('/').get(AirplaneController.getAirplanes);
+router.route('/:id').get(AirplaneController.getAirplane);
 
 module.exports = router;
