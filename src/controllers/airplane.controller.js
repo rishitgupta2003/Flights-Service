@@ -74,7 +74,7 @@ const getAirplane = asyncHandler (
                     )
         }catch(error){
             throw new ApiError(
-                StatusCodes.INTERNAL_SERVER_ERROR,
+                error.status_code || StatusCodes.INTERNAL_SERVER_ERROR,
                 error.message
             );
         }

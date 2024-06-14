@@ -31,9 +31,15 @@ async function getAirplanes(){
 async function getAirplane(id){
     try {
         const airplane = await airplaneRepository.get(id);
+        if(!airplane){
+            throw new ApiError(
+                StatusCodes.NOT_FOUND,
+                "NOT FOUND / DOESN'T EXIST"
+            );
+        }
         return airplane;
     } catch (error) {
-        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+        throw new ApiError(error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message);
     }
 }
 
