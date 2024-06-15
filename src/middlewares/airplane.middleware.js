@@ -1,8 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
-const { asyncHandler, ApiError, ApiResponse } = require("../utils");
+const { asyncHandler, ApiError } = require("../utils");
 const { Logger } = require("../config");
 
-const createCreateRequest = asyncHandler(
+const validateCreateRequest = asyncHandler(
     async (req, res, next) => {
         if(!req.body.modelNumber){
             Logger.error("Model Number not Available",{});
@@ -15,13 +15,21 @@ const createCreateRequest = asyncHandler(
     }
 );
 
-const updateRequest = asyncHandler (
+const validateUpdateRequest = asyncHandler (
     async (req, res, next) => {
-        if(!req.body.id || !req.body.data){
-            Logger.error("Data Format not Correct : {id, data}",{});
+        if(!req.params.id){
+            Logger.error("ID Not Available",{});
             throw new ApiError(
                 StatusCodes.BAD_REQUEST,
-                "Data Format not Correct : {id, data}"
+                "ID NOT AVAILABLE"
+            )
+        }
+
+        if(!req.body.capacity && !isNaN(req.body.capacity)){
+            Logger.error("Capacity Format is Wrong",{});
+            throw new ApiError(
+                StatusCodes.BAD_REQUEST,
+                "Capacity Format is Wrong"
             );
         }
         next();
@@ -29,6 +37,6 @@ const updateRequest = asyncHandler (
 )
 
 module.exports = {
-    createCreateRequest,
-    updateRequest
+    validateCreateRequest,
+    validateUpdateRequest
 }

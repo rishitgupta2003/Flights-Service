@@ -65,7 +65,7 @@ async function updateAirplane(data){
         if(!response){
             throw new ApiError(
                 StatusCodes.NOT_FOUND,
-                "Resource Not Found"
+                "Airplane Not Found"
             )
         }
         return response;

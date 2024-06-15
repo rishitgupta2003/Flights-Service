@@ -124,20 +124,22 @@ const deleteAirplane = asyncHandler (
 
 /*
     PATCH Method
-    /airplane/
+    /airplane/:id
     req.body: {
-        id: __,
-        data : {
-            'fieldToChange': __,
-            'newValue':__
-        }
+        'fieldToChange': __,
+        'newValue':__
     }
 */
 
 const updateFlight = asyncHandler (
     async (req, res) => {
         try {
-            const response = await AirplaneService.updateAirplane(req.body);
+            const id = req.params.id;
+            const data = {
+                id,
+                data: req.body
+            }
+            const response = await AirplaneService.updateAirplane(data);
             return res
                     .status(StatusCodes.OK)
                     .json(
