@@ -59,9 +59,26 @@ async function deleteAirplane(id){
     }
 }
 
+async function updateAirplane(data){
+    try {
+        const response = await airplaneRepository.update(data);
+        if(!response){
+            throw new ApiError(
+                StatusCodes.NOT_FOUND,
+                "Resource Not Found"
+            )
+        }
+        return response;
+    } catch (error) {
+        throw new ApiError(
+            error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message);
+    }
+}
+
 module.exports = {
     createAirplane,
     getAirplanes,
     getAirplane,
-    deleteAirplane
+    deleteAirplane,
+    updateAirplane
 }

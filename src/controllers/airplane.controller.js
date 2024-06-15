@@ -38,6 +38,8 @@ const createAirplane = asyncHandler (
 
 /*
     GET Method
+    /airplane/
+    req.body : {}
 */
 
 const getAirplanes = asyncHandler (
@@ -120,9 +122,44 @@ const deleteAirplane = asyncHandler (
     }
 )
 
+/*
+    PATCH Method
+    /airplane/
+    req.body: {
+        id: __,
+        data : {
+            'fieldToChange': __,
+            'newValue':__
+        }
+    }
+*/
+
+const updateFlight = asyncHandler (
+    async (req, res) => {
+        try {
+            const response = await AirplaneService.updateAirplane(req.body);
+            return res
+                    .status(StatusCodes.OK)
+                    .json(
+                        new ApiResponse(
+                            StatusCodes.OK,
+                            response,
+                            "Airplane Updated Successfully"
+                        )
+                    );
+        } catch (error) {
+            throw new ApiError(
+                error.status_code || StatusCodes.INTERNAL_SERVER_ERROR,
+                error.message
+            );
+        }
+    }
+)
+
 module.exports = {
     createAirplane,
     getAirplanes,
     getAirplane,
-    deleteAirplane
+    deleteAirplane,
+    updateFlight
 }

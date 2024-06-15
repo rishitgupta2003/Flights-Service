@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.route('/').post(AirplaneMiddleware.createCreateRequest, AirplaneController.createAirplane);
 router.route('/').get(AirplaneController.getAirplanes);
+router.route('/').patch(AirplaneMiddleware.updateRequest, AirplaneController.updateFlight);
 router.route('/:id').get(AirplaneController.getAirplane);
 router.route('/:id').delete(AirplaneController.deleteAirplane);
 

@@ -15,7 +15,20 @@ const createCreateRequest = asyncHandler(
     }
 );
 
+const updateRequest = asyncHandler (
+    async (req, res, next) => {
+        if(!req.body.id || !req.body.data){
+            Logger.error("Data Format not Correct : {id, data}",{});
+            throw new ApiError(
+                StatusCodes.BAD_REQUEST,
+                "Data Format not Correct : {id, data}"
+            );
+        }
+        next();
+    }
+)
 
 module.exports = {
     createCreateRequest,
+    updateRequest
 }

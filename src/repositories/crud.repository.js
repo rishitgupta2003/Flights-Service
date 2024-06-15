@@ -1,4 +1,6 @@
+const { StatusCodes } = require('http-status-codes');
 const { Logger } = require('../config');
+const { ApiError } = require('../utils');
 
 class CrudRepository{
     constructor(model){
@@ -58,6 +60,9 @@ class CrudRepository{
                     id: data.id
                 }
             });
+            if(response[0] == 0){
+                throw new ApiError(StatusCodes.NOT_FOUND, "Requested Airplane NOT FOUND");
+            }
             return response;
         } catch (error) {
             Logger.error(`Something Went Wrong with CRUD Repo : Update Logic -> ${error}`);
