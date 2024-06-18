@@ -1,14 +1,14 @@
-const { StatusCodes } = require('http-status-codes');
-const { CityRepository } = require('../repositories');
-const { ApiError } = require("../utils");
+const { StatusCodes } = require("http-status-codes");
+const { AirportRepository } = require("../repositories");
+const { ApiError } = require('../utils');
 
-const cityRepository = new CityRepository();
+const airportRepository = new AirportRepository();
 
-async function createCity(data){
-    try{
-        const city = await cityRepository.create(data);
-        return city;
-    }catch(error){
+async function createAirport(data){
+    try {
+        const airport = await airportRepository.create(data);
+        return airport;
+    } catch (error) {
         if(error.name == 'SequelizeValidationError'){
             let errExp = [];
             error.errors.forEach( (err) => {
@@ -20,43 +20,27 @@ async function createCity(data){
     }
 }
 
-async function getCities(){
+async function getAirports(){
     try {
-        const cities = await cityRepository.getAll();
-        return cities;
+        const airports = await airportRepository.getAll();
+        return airports;
     } catch (error) {
         throw new ApiError(
-            StatusCodes.INTERNAL_SERVER_ERROR, error.message
+           StatusCodes.INTERNAL_SERVER_ERROR, error.message
         );
     }
 }
 
-async function getCity(id) {
-    try {
-        const city = await cityRepository.get(id);
-        if(!city){
+async function getAirport(id){
+    try{
+        const airport = await airportRepository.get(id);
+        if(!airport){
             throw new ApiError(
                 StatusCodes.NOT_FOUND,
                 "NOT FOUND / DOESN'T EXIST"
-            )
-        }
-        return city;
-    } catch (error) {
-        throw new ApiError(
-            error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message
-        );
-    }
-}
-
-async function deleteCity(id){
-    try{
-        const response = await cityRepository.destroy(id);
-        if(!response){
-            throw new ApiError(
-                StatusCodes.NOT_FOUND, "Unable to Delete Given City"
             );
         }
-        return response;
+        return airport;
     }catch(error){
         throw new ApiError(
             error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message
@@ -64,27 +48,44 @@ async function deleteCity(id){
     }
 }
 
-async function updateCity(data){
+async function deleteAirport(id){
     try {
-        const response = await cityRepository.update(data);
+        const response = await airportRepository.destroy(id);
         if(!response){
             throw new ApiError(
-                StatusCodes.NOT_FOUND,
-                "City Not Found"
+                StatusCodes.NOT_FOUND, "Unable to Delete Given Airport"
             );
         }
         return response;
     } catch (error) {
         throw new ApiError(
             error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message
-        )
+        );
     }
 }
 
+async function updateAirport(data){
+    try {
+        const response = await airportRepository.update(data);
+        if(!response){
+            throw new ApiError(
+                StatusCodes.NOT_FOUND,
+                "Airport Not Found"
+            );
+        }
+        return response;
+    } catch (error) {
+        throw new ApiError(
+            error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message
+        );
+    }
+}
+
+
 module.exports = {
-    createCity,
-    getCities,
-    getCity,
-    deleteCity,
-    updateCity
+    createAirport,
+    getAirports,
+    getAirport,
+    deleteAirport,
+    updateAirport
 }
