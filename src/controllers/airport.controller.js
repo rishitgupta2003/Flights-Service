@@ -1,20 +1,23 @@
 const { StatusCodes } = require("http-status-codes");
-const { AirplaneService } = require("../services");
+const { AirportService } = require("../services");
 const { asyncHandler, ApiResponse, ApiError } = require("../utils");
 
 /*
     POST Method
-    req_body : { modelNumber, capacity }
+    req_body : { name, code, address, cityID },
+    /airport/
 */
 
-const createAirplane = asyncHandler (
+const createAiport = asyncHandler (
     async (req, res) => {
         try {
-            const { modelNumber, capacity } = req.body;
-            const airplane = await AirplaneService.createAirplane(
+            const { name, code, address, cityID } = req.body;
+            const airport = await AirportService.createAirport(
                 {
-                    modelNumber: modelNumber,
-                    capacity: capacity
+                    name: name,
+                    code: code,
+                    address: address,
+                    cityID: cityID
                 }
             )
 
@@ -23,8 +26,8 @@ const createAirplane = asyncHandler (
                     json(
                         new ApiResponse(
                             StatusCodes.OK,
-                            airplane,
-                        "Airplane Added Successfully"
+                            airport,
+                        "Airport Added Successfully"
                     )
             );
         } catch (error) {
@@ -42,17 +45,17 @@ const createAirplane = asyncHandler (
     req.body : {}
 */
 
-const getAirplanes = asyncHandler (
+const getAirports = asyncHandler (
     async (req, res) => {
         try {
-            const airplanes = await AirplaneService.getAirplanes();
+            const airport = await AirportService.getAirports();
             return res
                     .status(StatusCodes.OK)
                     .json(
                         new ApiResponse(
                             StatusCodes.OK,
-                            airplanes,
-                            "Fetched Airplanes Successfully"
+                            airport,
+                            "Fetched Airport Successfully"
                         )
                     );
         } catch (error) {
@@ -66,21 +69,21 @@ const getAirplanes = asyncHandler (
 
 /*
     GET Method
-    /airplanes/:id
+    /airport/:id
     req.body : {}
 */
 
-const getAirplane = asyncHandler (
+const getAirport = asyncHandler (
     async (req, res) => {
         try{
             const id = req.params.id;
-            const airplane = await AirplaneService.getAirplane(id);
+            const airport = await AirportService.getAirport(id);
             return res
                     .status(StatusCodes.OK)
                     .json(
                         new ApiResponse(
                             StatusCodes.OK,
-                            airplane,
+                            airport,
                             "Fetched Details Successfully"
                         )
                     )
@@ -95,15 +98,15 @@ const getAirplane = asyncHandler (
 
 /*
     DELETE Method
-    /airplane/:id
+    /airport/:id
     req.body: {}
 */
 
-const deleteAirplane = asyncHandler (
+const deleteAirport = asyncHandler (
     async (req, res) => {
         try{
             const id = req.params.id;
-            const response = await AirplaneService.deleteAirplane(id);
+            const response = await AirportService.deleteAirport(id);
             return res
                     .status(StatusCodes.OK)
                     .json(
@@ -124,7 +127,7 @@ const deleteAirplane = asyncHandler (
 
 /*
     PATCH Method
-    /airplane/:id
+    /airport/:id
     req.body: {
         'fieldToChange': __,
         'newValue':__
@@ -139,14 +142,14 @@ const updateAirport = asyncHandler (
                 id,
                 data: req.body
             }
-            const response = await AirplaneService.updateAirplane(data);
+            const response = await AirportService.updateAirport(data);
             return res
                     .status(StatusCodes.OK)
                     .json(
                         new ApiResponse(
                             StatusCodes.OK,
                             response,
-                            "Airplane Updated Successfully"
+                            "Airport Updated Successfully"
                         )
                     );
         } catch (error) {
@@ -159,9 +162,9 @@ const updateAirport = asyncHandler (
 )
 
 module.exports = {
-    createAirplane,
-    getAirplanes,
-    getAirplane,
-    deleteAirplane,
+    createAiport,
+    getAirport,
+    getAirports,
+    deleteAirport,
     updateAirport
 }
