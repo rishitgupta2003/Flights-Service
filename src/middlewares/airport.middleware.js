@@ -18,7 +18,7 @@ const validateCreateRequest = asyncHandler(
                 "Code Not Found in Request"
             );
         }
-        if(!req.body.cityId){
+        if(!req.body.cityID){
             Logger.error("CityID not found in Request", {});
             throw new ApiError(
                 StatusCodes.BAD_REQUEST,

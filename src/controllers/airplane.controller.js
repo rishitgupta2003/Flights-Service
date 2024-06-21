@@ -131,7 +131,7 @@ const deleteAirplane = asyncHandler (
     }
 */
 
-const updateAirport = asyncHandler (
+const updateAirplane = asyncHandler (
     async (req, res) => {
         try {
             const id = req.params.id;
@@ -163,5 +163,5 @@ module.exports = {
     getAirplanes,
     getAirplane,
     deleteAirplane,
-    updateAirport
+    updateAirplane
 }

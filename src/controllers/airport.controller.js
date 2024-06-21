@@ -41,7 +41,7 @@ const createAiport = asyncHandler (
 
 /*
     GET Method
-    /airplane/
+    /airport/
     req.body : {}
 */
 
