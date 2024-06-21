@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { FlightRepository } = require("../repositories");
-const { ApiError } = require("../utils")
+const { ApiError } = require("../utils");
+const { Op } = require("sequelize");
 const flightRepository = new FlightRepository();
 
 async function createFlight(data){
@@ -17,6 +18,36 @@ async function createFlight(data){
         }
         throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
     }    
+}
+
+async function getFilterFlights(query){
+    try {
+        console.log(query);
+        let customFilter = {};
+        if(query.trips){
+            [departureAirportId, arrivalAirportId] = query.trips.split("-");
+            
+            if(departureAirportId === arrivalAirportId) throw new ApiError(StatusCodes.BAD_REQUEST, "Arrival & Departure Cannot be Same");
+
+            customFilter.departureAirportId = departureAirportId;
+            customFilter.arrivalAirportId = arrivalAirportId;
+        }
+
+        if(query.price){
+            [minPrice, maxPrice] = query.price.split("-");
+            customFilter.price = {
+                [Op.between] : [minPrice, (maxPrice == undefined) ? 20000 : maxPrice]
+            }
+        }
+
+        const flights = await flightRepository.getAllFlights(customFilter);
+        return flights;
+    } catch (error) {
+        throw new ApiError(
+            error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message || "Cannot fetch Data for Flights;"
+        )
+    }
+
 }
 
 async function getFlights(){
@@ -80,5 +111,6 @@ module.exports = {
     getFlights,
     getFlight,
     deleteFlight,
-    updateFlight
+    updateFlight,
+    getFilterFlights
 }

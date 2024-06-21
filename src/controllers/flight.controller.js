@@ -1,6 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 const { FlightService } = require("../services");
-const { asyncHandler, ApiResponse, ApiError } = require("../utils");
+const { asyncHandler, ApiResponse, ApiError, compareTime } = require("../utils");
 
 /*
     POST Method
@@ -24,6 +24,14 @@ const createFlight = asyncHandler (
     async (req, res) => {
         try {
             const { flightNumber, airplaneId, departureAirportId, arrivalAirportId, arrivalTime, departureTime, price, boardingGate, totalSeats } = req.body;
+            
+            if(compareTime(arrivalTime, departureTime) == false){
+                throw new ApiError(
+                    StatusCodes.BAD_REQUEST,
+                    "Departure Time cannot be before Arrival Time"
+                );
+            }
+
             const Flight = await FlightService.createFlight(
                 {
                     flightNumber, 
@@ -39,10 +47,10 @@ const createFlight = asyncHandler (
             )
 
             return res.
-                    status(StatusCodes.OK).
+                    status(StatusCodes.CREATED).
                     json(
                         new ApiResponse(
-                            StatusCodes.OK,
+                            StatusCodes.CREATED,
                             Flight,
                         "Flight Added Successfully"
                     )
@@ -56,6 +64,29 @@ const createFlight = asyncHandler (
     }
 );
 
+const getAllFlights = asyncHandler(
+    async (req, res) => {
+        try{
+            const flights = await FlightService.getFilterFlights(req.query);
+            return res
+                    .status(StatusCodes.OK)
+                    .json(
+                        new ApiResponse(
+                            StatusCodes.OK,
+                            flights,
+                            "Flights Fetched"
+                        )
+                    )
+        }catch(error){
+            throw new ApiError(
+                error.status_codes || StatusCodes.INTERNAL_SERVER_ERROR,
+                error.message
+            )
+        }
+    }
+)
+
 module.exports = {
-    createFlight
+    createFlight,
+    getAllFlights
 }
