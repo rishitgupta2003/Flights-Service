@@ -1,5 +1,6 @@
 const CrudRepository = require("./crud.repository");
-const { Flight } = require("../models");
+const { Sequelize } = require("sequelize");
+const { Flight, Airplane, Airport } = require("../models");
 const { Logger } = require("../config");
 
 class FlightRepository extends CrudRepository{
@@ -7,11 +8,27 @@ class FlightRepository extends CrudRepository{
         super(Flight);
     }
 
-    async getAllFlights(filter){
+    async getAllFlights(filter, sort){
         try{
             const response = await Flight.findAll(
                 {
-                    where: filter
+                    where: filter,
+                    order: sort,
+                    include: [
+                        {
+                            model: Airport,
+                            as: "departureAirport",
+                            required: true,
+                            on: {
+                                col1: Sequelize.where(Sequelize.col("Flight.departureAirportId"), "=", Sequelize.col("departureAirport.code"))
+                            },
+                        },
+                        {
+                            model: Airplane,
+                            as: "airplaneDetail",
+                            required: true
+                        },
+                    ]
                 }
             );
             return response;

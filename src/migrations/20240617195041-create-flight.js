@@ -36,10 +36,10 @@ module.exports = {
         },
         onDelete: 'CASCADE'
       },
-      arrivalTime: {
+      departureTime: {
         type: Sequelize.DATE
       },
-      departureTime: {
+      arrivalTime: {
         type: Sequelize.DATE
       },
       price: {

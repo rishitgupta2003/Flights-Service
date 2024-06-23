@@ -22,8 +22,9 @@ async function createFlight(data){
 
 async function getFilterFlights(query){
     try {
-        console.log(query);
+        const endTripTime = " 23:59:00"; 
         let customFilter = {};
+        let sortFilter;
         if(query.trips){
             [departureAirportId, arrivalAirportId] = query.trips.split("-");
             
@@ -40,14 +41,31 @@ async function getFilterFlights(query){
             }
         }
 
-        const flights = await flightRepository.getAllFlights(customFilter);
+
+        if(query.travellers){
+            customFilter.totalSeats = {
+                [Op.gte] : query.travellers
+            }
+        }
+
+        if(query.tripDate){
+            customFilter.departureTime = {
+                [Op.between] : [query.tripDate, query.tripDate + endTripTime]
+            }
+        }
+
+        if(query.sort){
+           const params = query.sort.split(',');
+           const sortFilters = params.map( (param) => param.split('_'));
+           sortFilter = sortFilters; 
+        }
+        const flights = await flightRepository.getAllFlights(customFilter, sortFilter);
         return flights;
     } catch (error) {
         throw new ApiError(
             error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message || "Cannot fetch Data for Flights;"
         )
     }
-
 }
 
 async function getFlights(){
