@@ -68,15 +68,6 @@ async function getFilterFlights(query){
     }
 }
 
-async function getFlights(){
-    try {
-        const Flights = await flightRepository.getAll();
-        return Flights;
-    } catch (error) {
-        throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, error.message);
-    }
-}
-
 async function getFlight(id){
     try {
         const Flight = await flightRepository.get(id);
