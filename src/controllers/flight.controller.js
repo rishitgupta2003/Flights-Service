@@ -86,7 +86,64 @@ const getAllFlights = asyncHandler(
     }
 )
 
+const getFlight = asyncHandler (
+    async (req, res) => {
+        try{
+            const id = req.params.id;
+            const flight = await FlightService.getFlight(id);
+            return res
+                    .status(StatusCodes.OK)
+                    .json(
+                        new ApiResponse(
+                            StatusCodes.OK,
+                            flight,
+                            "Fetched Details Successfully"
+                        )
+                    )
+        }catch(error){
+            throw new ApiError(
+                error.status_code || StatusCodes.INTERNAL_SERVER_ERROR,
+                error.message
+            );
+        }
+    }
+)
+
+const updateSeats = asyncHandler(
+    async (req, res) => {
+        try{
+            const flightId  = req.params.id;
+            const { seats, dec } = req.body;
+            const response = await FlightService.updateSeats(
+                {
+                    flightId,
+                    seats: parseInt(seats),
+                    dec
+                }
+            );
+            console.log(response);
+
+            return res
+                    .status(StatusCodes.OK)
+                    .json(
+                        new ApiResponse(
+                            StatusCodes.OK,
+                            response,
+                            "Updated Seats Successfully"
+                        )
+                    );
+        }catch(error){
+            throw new ApiError(
+                error.status_codes || StatusCodes.INTERNAL_SERVER_ERROR,
+                error.message
+            );
+        }
+    }
+)
+
 module.exports = {
     createFlight,
-    getAllFlights
+    getAllFlights,
+    getFlight,
+    updateSeats
 }

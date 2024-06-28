@@ -2,6 +2,8 @@ const CrudRepository = require("./crud.repository");
 const { Sequelize } = require("sequelize");
 const { Flight, Airplane, Airport, City } = require("../models");
 const { Logger } = require("../config");
+const db = require("../models");
+const { addRowLocksOnFlights } = require("./query");
 
 class FlightRepository extends CrudRepository{
     constructor(){
@@ -50,6 +52,24 @@ class FlightRepository extends CrudRepository{
             return response;
         }catch(error){
             Logger.error("Something Went Wrong in Fetching Flights", {});
+            throw error;
+        }
+    }
+
+    async updateRemainingSeats(flightId, seats, dec = true){
+        try{
+            await db.sequelize.query(addRowLocksOnFlights(flightId));  //pessimistic concurrency control
+            const flight = await Flight.findByPk(flightId);
+            console.log(seats);
+            if(parseInt(dec)){
+                const response = await flight.decrement('totalSeats', { by: seats });
+                return response;
+            }else{
+                const response = await flight.increment('totalSeats', { by: seats });
+                return response;
+            }
+        }catch(error){
+            Logger.error("Something Went Wrong "+error.message, {});
             throw error;
         }
     }

@@ -115,11 +115,26 @@ async function updateFlight(data){
     }
 }
 
+async function updateSeats(data){
+    try{
+        const response = await flightRepository.updateRemainingSeats(
+            data.flightId,
+            data.seats,
+            data.dec
+        );
+        return response;
+    }catch(error){
+        throw new ApiError(
+            error.status_code || StatusCodes.INTERNAL_SERVER_ERROR, error.message
+        );
+    }
+}
+
 module.exports = {
     createFlight,
-    getFlights,
     getFlight,
     deleteFlight,
     updateFlight,
-    getFilterFlights
+    getFilterFlights,
+    updateSeats
 }

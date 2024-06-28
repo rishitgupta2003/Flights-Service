@@ -74,10 +74,10 @@ const validateCreateRequest = asyncHandler(
 const validateUpdateRequest = asyncHandler(
     (req,res,next) => {
         if(!req.body.seats){
-            Logger.error("Seats not found in Request", {});
+            Logger.error("seats not found in Request", {});
             throw new ApiError(
                 StatusCodes.BAD_REQUEST,
-                "Seats Not Found in Request"
+                "seats Not Found in Request"
             );
         }
         next();
