@@ -117,7 +117,7 @@ const updateSeats = asyncHandler(
             const response = await FlightService.updateSeats(
                 {
                     flightId,
-                    seats: parseInt(seats),
+                    seats,
                     dec
                 }
             );
