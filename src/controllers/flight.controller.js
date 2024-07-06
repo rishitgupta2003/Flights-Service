@@ -28,7 +28,7 @@ const createFlight = asyncHandler (
             if(compareTime(arrivalTime, departureTime) == false){
                 throw new ApiError(
                     StatusCodes.BAD_REQUEST,
-                    "Departure Time cannot be before Arrival Time"
+                    "Arrival Time cannot be before Departure Time"
                 );
             }
 
